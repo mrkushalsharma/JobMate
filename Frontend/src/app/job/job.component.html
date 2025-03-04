@@ -1,0 +1,106 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 form-group">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Enter Job URL"
+        [(ngModel)]="url"
+        name="url"
+        #urlInput
+      />
+    </div>
+    <div class="col-md-2">
+      <button
+        class="btn btn-warning"
+        (click)="search()"
+        [disabled]="!url.length"
+      >
+        Search
+      </button>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-danger" (click)="reset()">Reset</button>
+    </div>
+  </div>
+
+  <table id="jobs">
+    <tr>
+      <th>Sn.</th>
+      <th>Company</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Location</th>
+      <th>Applied</th>
+      <th>Created At</th>
+      <th>Actions</th>
+    </tr>
+    <tr *ngFor="let item of datas; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ item.company_name }}</td>
+      <td>{{ item.job_title }}</td>
+      <td>{{ item.job_description.substr(0, 100) }}</td>
+      <td>{{ item.location }}</td>
+      <td>{{ item.applied }}</td>
+      <td>{{ item.created_at | date : "medium" }}</td>
+      <td>
+        <button class="btn btn-primary" (click)="apply(item.id)">Apply</button>
+        <button class="btn btn-secondary" (click)="openModal(item)">
+          View
+        </button>
+      </td>
+    </tr>
+    <tr *ngIf="!datas.length" colspan="7">
+      <td>No data available</td>
+    </tr>
+  </table>
+  
+  <ngx-spinner
+    bdColor="rgba(0, 0, 0, 0.8)"
+    [fullScreen]="true"
+    type="line-spin-fade"
+    template="<img src='assets/spinner.gif' />"
+  >
+  </ngx-spinner>
+  
+  <div
+    class="modal"
+    tabindex="-1"
+    role="dialog"
+    [ngClass]="{ show: showModal }"
+    (click)="closeModal()"
+  >
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Job Details</h5>
+          <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="closeModal()"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            {{ selected?.job_title }} | {{ selected?.company_name }} |
+            {{ selected?.location }}
+          </p>
+          <hr />
+          <p>{{ selected?.job_description }}</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeModal()"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

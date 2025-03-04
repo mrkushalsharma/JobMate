@@ -1,0 +1,26 @@
+#jobs {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #jobs td, #jobs th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #jobs tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #jobs tr:hover {background-color: #ddd;}
+  
+  #jobs th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04AA6D;
+    color: white;
+  }
+
+  .show{
+    display: block;
+  }
