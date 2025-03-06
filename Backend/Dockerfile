@@ -39,5 +39,5 @@ USER appuser
 # Expose the port the app runs on
 EXPOSE 8000
 
-# Run database migrations at container startup and start the application
-CMD ["sh", "-c", "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000"]
+# start the application
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port 8000"]
