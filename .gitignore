@@ -20,8 +20,8 @@ site_build
 venv
 docs.zip
 archive.zip
-Backend\script.py
-Backend\file.py
+*\script.py
+*\file.py
 # vim temporary files
 *~
 .*.sw?
