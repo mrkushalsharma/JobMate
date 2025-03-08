@@ -19,6 +19,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { JobComponent } from './job/job.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ResumeComponent } from './resume/resume.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     RegisterComponent,
     DashboardComponent,
     LogoutComponent,
-    JobComponent
+    JobComponent,
+    ResumeComponent
   ],
   imports: [
     BrowserModule,

@@ -18,13 +18,14 @@
     "@angular/platform-browser": "~13.3.0",
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/router": "~13.3.0",
+    "@ng-bootstrap/ng-bootstrap": "^18.0.0",
     "apexcharts": "3.29.0",
     "bootstrap": "^4",
     "font-awesome": "^4.7.0",
     "ng-apexcharts": "1.7.1",
+    "ngx-spinner": "^13.1.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
-    "ngx-spinner": "^13.1.1",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

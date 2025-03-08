@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { UserModel } from '../models/user.model';
 
@@ -44,14 +44,14 @@ export class AuthService {
     return true;
   }
 
-  async login({ email, password }: UserModel): Promise<any> {
+  async login({ username, password }: UserModel): Promise<any> {
     // clear some data
     this.clearData();
     const formData = new FormData();
-    formData.append('username', email || "");
+    formData.append('username', username || "");
     formData.append('password', password || "");
 
-    const data: any = await this.http.post(environment['apiBaseUrl'] + 'login', formData).toPromise();
+    const data: any = await this.http.post(environment['apiBaseUrl'] + 'auth/token', formData).toPromise();
     if (data['access_token']) {
       let user = this.parseJwt(data['access_token']);
       data.user = user;
@@ -64,10 +64,11 @@ export class AuthService {
     }
   }
 
-  async register({ email, password }: UserModel): Promise<any> {
-    const data: any = await this.http.post(environment['apiBaseUrl'] + 'users/', {
+  async register({ email, username, password }: UserModel): Promise<any> {
+    const data: any = await this.http.post(environment['apiBaseUrl'] + 'auth/register', {
       email: email,
-      password: password
+      username: username,
+      password: password,
     }).toPromise();
     if (data && data.id) {
       return true;

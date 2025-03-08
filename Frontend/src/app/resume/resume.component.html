@@ -1,0 +1,43 @@
+<!-- resume.component.html -->
+<div class="container mt-4">
+    <h2>Resume List</h2>
+    <button class="btn btn-primary mb-3" (click)="openUploadModal()">Upload Resume</button>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let resume of resumes; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ resume.title }}</td>
+          <td>
+            <button class="btn btn-danger" (click)="deleteResume(resume.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal" id="uploadModal" tabindex="-1" [ngClass]="{ 'show': showModal }" [ngStyle]="{ 'display': showModal ? 'block' : 'none' }">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Upload Resume</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" class="form-control mb-2" placeholder="Title" [(ngModel)]="resumeTitle" />
+          <input type="file" class="form-control" (change)="onFileSelected($event)" />
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+          <button class="btn btn-primary" (click)="uploadResume()">Upload</button>
+        </div>
+      </div>
+    </div>
+  </div>
