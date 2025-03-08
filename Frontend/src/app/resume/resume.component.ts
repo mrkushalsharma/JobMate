@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+// import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
+import { AuthService } from '../_auth/services/auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-resume',
@@ -13,8 +15,12 @@ export class ResumeComponent implements OnInit {
   resumeTitle: string = '';
   selectedFile: File | null = null;
   apiUrl = `${environment['apiBaseUrl']}/api/resumes`; // Update with actual API
+  showModal = false;
+  formSubmitted: boolean = false;
 
-  constructor(private http: HttpClient, private modalService: NgbModal) {}
+  constructor(private authService: AuthService,
+    private spinner: NgxSpinnerService,
+    private http: HttpClient) { }
 
   ngOnInit() {
     this.loadResumes();
@@ -22,18 +28,28 @@ export class ResumeComponent implements OnInit {
 
   // Load resumes from API
   loadResumes() {
-    this.http.get<any[]>(this.apiUrl).subscribe(res => {
-      this.resumes = res;
+    this.http.get(environment['apiBaseUrl'] + 'resumes/', {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.authService.getToken()}`,
+        'Content-Type': 'application/json'
+      })
+    }).subscribe((response: any) => {
+      if(response?.length){
+        this.resumes = response;
+      }
+      // this.datas = response;
+    }, err => {
+      console.log(err)
     });
   }
 
   // Open modal for uploading resume
   openUploadModal() {
-    const modalElement = document.getElementById('uploadModal');
-    if (modalElement) {
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
-    }
+    this.showModal = true;
+  }
+
+  closeUploadModal() {
+    this.showModal = false;
   }
 
   // Handle file selection
@@ -43,8 +59,8 @@ export class ResumeComponent implements OnInit {
 
   // Upload resume
   uploadResume() {
+    this.formSubmitted = true;
     if (!this.selectedFile || !this.resumeTitle) {
-      alert('Please select a file and enter a title.');
       return;
     }
 
@@ -52,29 +68,33 @@ export class ResumeComponent implements OnInit {
     formData.append('title', this.resumeTitle);
     formData.append('file', this.selectedFile);
 
-    this.http.post(this.apiUrl, formData).subscribe(() => {
-      alert('Resume uploaded successfully!');
+    this.http.post(environment['apiBaseUrl'] + 'resumes/', formData, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.authService.getToken()}`,
+        // 'Content-Type': 'application/json'
+      }, )
+    }).subscribe(response => {
+      this.closeUploadModal();
       this.loadResumes();
-      this.closeModal();
+    }, err => {
+      console.log(err)
     });
   }
 
   // Delete resume
   deleteResume(id: number) {
     if (confirm('Are you sure you want to delete this resume?')) {
-      this.http.delete(`${this.apiUrl}/${id}`).subscribe(() => {
-        alert('Resume deleted successfully!');
+      this.http.delete(`${environment['apiBaseUrl']}resumes/${id}`, {
+        headers: new HttpHeaders({
+          'Authorization': `Bearer ${this.authService.getToken()}`,
+          'Content-Type': 'application/json'
+        })
+      }).subscribe(response => {
         this.loadResumes();
+      }, err => {
+        console.log(err)
       });
     }
   }
 
-  // Close modal
-  closeModal() {
-    const modalElement = document.getElementById('uploadModal');
-    if (modalElement) {
-      const modal = bootstrap.Modal.getInstance(modalElement);
-      modal?.hide();
-    }
-  }
 }
