@@ -19,6 +19,11 @@ export class JobComponent implements OnInit {
   newJob: any = { title: '', company: '', description: '' }; // New property for new job data
   submitted: boolean = false;
 
+  showResumeModal: boolean = false; // Modal visibility
+  selectedJobId: any; // Selected job ID for association
+  selectedResumeId: any; // Selected resume ID for association
+  resumes: any[] = []; // Array to hold resumes
+
   constructor(private authService: AuthService,
     private spinner: NgxSpinnerService,
     private http: HttpClient
@@ -35,6 +40,20 @@ export class JobComponent implements OnInit {
       this.datas = response;
     }, err => {
       console.log(err)
+    });
+    this.getResumes();
+  }
+
+  getResumes(){
+    this.http.get(environment['apiBaseUrl'] + 'resumes/', {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.authService.getToken()}`,
+        'Content-Type': 'application/json'
+      })
+    }).subscribe((response: any) => {
+      this.resumes = response;
+    }, err => {
+      console.log(err);
     });
   }
 
@@ -60,6 +79,7 @@ export class JobComponent implements OnInit {
 
   closeModal() {
     this.showModal = false;
+    this.selected = {};
   }
 
   openAddModal() {
@@ -115,4 +135,34 @@ export class JobComponent implements OnInit {
     }
   }
 
+    // New method to open the resume modal
+    openResumeModal(job: any) {
+      this.selectedJobId = job.id; // Set the selected job ID
+      this.showResumeModal = true; // Show the resume modal
+    }
+  
+    // New method to close the resume modal
+    closeResumeModal() {
+      this.showResumeModal = false; // Hide the resume modal
+      this.selectedResumeId = null; // Reset selected resume ID
+    }
+  
+    // New method to associate a resume with a job
+    associateResume(jobId: number, resumeId: number) {
+      debugger;
+      this.http.post(`${environment['apiBaseUrl']}jobs/${jobId}/resumes/${resumeId}`, {}, {
+        headers: new HttpHeaders({
+          'Authorization': `Bearer ${this.authService.getToken()}`,
+          'Content-Type': 'application/json'
+        })
+      }).subscribe(response => {
+        debugger;
+        this.ngOnInit(); // Refresh the job list
+        this.closeResumeModal(); // Close the modal after association
+        alert("Resume Associated Successfully")
+      }, err => {
+        console.log(err);
+      });
+    }
+  
 }
