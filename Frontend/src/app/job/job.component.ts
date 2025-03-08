@@ -23,7 +23,8 @@ export class JobComponent implements OnInit {
   selectedJobId: any; // Selected job ID for association
   selectedResumeId: any; // Selected resume ID for association
   resumes: any[] = []; // Array to hold resumes
-
+  matchValue: any = {};
+  
   constructor(private authService: AuthService,
     private spinner: NgxSpinnerService,
     private http: HttpClient
@@ -139,6 +140,7 @@ export class JobComponent implements OnInit {
     openResumeModal(job: any) {
       this.selectedJobId = job.id; // Set the selected job ID
       this.showResumeModal = true; // Show the resume modal
+      this.matchValue = {};
     }
   
     // New method to close the resume modal
@@ -147,19 +149,35 @@ export class JobComponent implements OnInit {
       this.selectedResumeId = null; // Reset selected resume ID
     }
   
-    // New method to associate a resume with a job
-    associateResume(jobId: number, resumeId: number) {
-      debugger;
-      this.http.post(`${environment['apiBaseUrl']}jobs/${jobId}/resumes/${resumeId}`, {}, {
+    // New method to match a resume with a job
+    matchResume(jobId: number, resumeId: number) {
+      // this.http.get(`${environment['apiBaseUrl']}matches/jobs/${jobId}/resumes/${resumeId}`, {
+      //   headers: new HttpHeaders({
+      //     'Authorization': `Bearer ${this.authService.getToken()}`,
+      //     'Content-Type': 'application/json'
+      //   })
+      // }).subscribe(response => {
+      //   // this.ngOnInit(); // Refresh the job list
+      //   this.closeResumeModal(); // Close the modal after association
+      //   alert("Resume Matched Successfully")
+      // }, err => {
+      //   console.log(err);
+      // });
+      if(!resumeId){
+        return;
+      }
+      this.http.post(`${environment['apiBaseUrl']}matches/calculate-all/jobs/${jobId}`, {}, {
         headers: new HttpHeaders({
           'Authorization': `Bearer ${this.authService.getToken()}`,
           'Content-Type': 'application/json'
         })
-      }).subscribe(response => {
-        debugger;
-        this.ngOnInit(); // Refresh the job list
-        this.closeResumeModal(); // Close the modal after association
-        alert("Resume Associated Successfully")
+      }).subscribe((response: any) => {
+        const match = response.find((item: any) => item.resume_id == resumeId);
+        if (match) {
+          this.matchValue = match; // Set the match score
+        } else {
+          this.matchValue = {}; // Reset if no match found
+        }
       }, err => {
         console.log(err);
       });

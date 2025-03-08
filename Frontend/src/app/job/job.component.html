@@ -25,16 +25,20 @@
           <td>{{ item.description.substr(0, 100) }}</td>
           <td>{{ item.application_date | date : "medium" }}</td>
           <td>
-            <button class="btn btn-danger" (click)="delete(item.id)">
-              Delete
-            </button>
-            <!-- Changed to apply method -->
-            <button class="btn btn-secondary" (click)="openModal(item)">
-              View
-            </button>
-            <button class="btn btn-info" (click)="openResumeModal(item)">
-              Associate Resume
-            </button>
+            <div class="btn-group" role="group">
+              <button class="btn btn-danger me-2" (click)="delete(item.id)" title="Delete">
+                <i class="fas fa-trash"></i> <!-- Icon for delete -->
+              </button>
+              <button class="btn btn-secondary me-2" (click)="openModal(item)" title="View">
+                <i class="fas fa-eye"></i> <!-- Icon for view -->
+              </button>
+              <button class="btn btn-info me-2" (click)="openEditModal(item)" title="Edit">
+                <i class="fas fa-edit"></i> <!-- Icon for edit -->
+              </button>
+              <button class="btn btn-info" (click)="openResumeModal(item)" title="Match Resume">
+                <i class="fas fa-file-upload"></i> <!-- Icon for match resume -->
+              </button>
+            </div>
           </td>
         </tr>
         <tr *ngIf="!datas.length" colspan="6">
@@ -55,7 +59,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Associate Resume</h5>
+        <h5 class="modal-title">Match Resume</h5>
         <button
           type="button"
           class="close"
@@ -66,20 +70,23 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Select a resume to associate with the job:</p>
-        <select [(ngModel)]="selectedResumeId" class="form-control">
+        <p>Select a resume to calculate match percentage with the job:</p>
+        <select [(ngModel)]="selectedResumeId" class="form-control" required="required">
           <option *ngFor="let resume of resumes" [value]="resume.id">
             {{ resume.title }}
           </option>
         </select>
+        <div *ngIf="matchValue && matchValue?.score " class="mt-3">
+          <strong>Match Score:</strong> {{ matchValue?.score }}
+        </div>
       </div>
       <div class="modal-footer">
         <button
           type="button"
           class="btn btn-primary"
-          (click)="associateResume(selectedJobId, selectedResumeId)"
+          (click)="matchResume(selectedJobId, selectedResumeId)"
         >
-          Associate
+          Match
         </button>
         <button
           type="button"
