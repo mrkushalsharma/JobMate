@@ -15,7 +15,6 @@ import { APP_BASE_HREF } from '@angular/common';
 import { AuthGuard } from './_auth/guards/auth.guard';
 import { TokenIntercept } from './_auth/tokenintercept';
 import { AuthService } from './_auth/services/auth.service';
-import { NgApexchartsModule } from 'ng-apexcharts';
 import { JobComponent } from './job/job.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -40,7 +39,6 @@ import { ResumeComponent } from './resume/resume.component';
     ReactiveFormsModule,
     FormsModule,
     AppRoutingModule,
-    NgApexchartsModule,
     NgxSpinnerModule
   ],
   providers: [
