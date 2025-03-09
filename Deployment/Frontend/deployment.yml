@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: jobmate-frontend
-        image: gireesagar/jobmate-frontend:v1
+        image: gireesagar/jobmate-frontend:v2
         resources:
           limits:
             memory: "128Mi"
