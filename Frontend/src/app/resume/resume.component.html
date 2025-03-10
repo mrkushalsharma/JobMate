@@ -1,0 +1,91 @@
+<div class="container mt-4">
+  <h2 class="text-center">Resume List</h2>
+  <button class="btn btn-primary mb-3" (click)="openUploadModal()">
+    Upload Resume
+  </button>
+  <div class="table-responsive">
+    <!-- Added div for responsiveness -->
+    <table class="table table-bordered table-striped">
+      <!-- Added table-striped for better design -->
+      <thead>
+        <tr>
+          <th>Sn.</th>
+          <th>Title</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let resume of resumes; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ resume.title }}</td>
+          <td>
+            <button class="btn btn-danger" (click)="deleteResume(resume.id)">
+              Delete
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="!resumes.length" colspan="3">
+          <!-- Adjusted colspan to match the number of columns -->
+          <td>No data available</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="uploadModal"
+  tabindex="-1"
+  [ngClass]="{ show: showModal }"
+  [ngStyle]="{ display: showModal ? 'block' : 'none' }"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <!-- Center the modal vertically and make it large -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload Resume</h5>
+
+        <button type="button" class="btn-close" (click)="closeUploadModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="resumeTitle" class="form-label">Title *</label>
+          <input
+            type="text"
+            id="resumeTitle"
+            class="form-control"
+            placeholder="Enter resume title"
+            [(ngModel)]="resumeTitle"
+            required
+          />
+          <div *ngIf="formSubmitted && !resumeTitle" class="text-danger">
+            Title is required.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="fileInput" class="form-label">Upload File *</label>
+          <input
+            type="file"
+            id="fileInput"
+            class="form-control"
+            (change)="onFileSelected($event)"
+            required
+          />
+          <div *ngIf="formSubmitted && !selectedFile" class="text-danger">
+            File is required.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeUploadModal()">
+          Close
+        </button>
+        <button class="btn btn-primary" (click)="uploadResume()">Upload</button>
+      </div>
+    </div>
+  </div>
+</div>

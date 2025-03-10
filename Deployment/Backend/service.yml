@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jobmate-backend-service
+  labels:
+    app: backend
+spec:
+  selector:
+    app: backend
+  ports:
+    - port: 8000     # Port exposed by the service
+      targetPort: 8000 # Port your container is listening on
+      
+  type: ClusterIP  # You can change this to NodePort or LoadBalancer if needed

@@ -1,14 +1,24 @@
 <div class="container">
   <div class="alert alert-primary text-center" role="alert">
-      <h1>Welcome to Job Tracker Dashboard</h1>
+      <h1>Welcome to Job Mate Dashboard</h1>
   </div>
-  <div id="chart">
-    <apx-chart
-        #chart
-      [series]="chartOptions.series"
-      [chart]="chartOptions.chart"
-      [labels]="chartOptions.labels"
-      [responsive]="chartOptions.responsive"
-    ></apx-chart>
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card text-white bg-success mb-3">
+        <div class="card-header text-center">Total Jobs</div>
+        <div class="card-body text-center">
+          <h2 class="card-title">{{ totalJobs }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card text-white bg-info mb-3">
+        <div class="card-header text-center">Total Resumes</div>
+        <div class="card-body text-center">
+          <h2 class="card-title">{{ totalResumes }}</h2>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -6,10 +6,12 @@ import { LogoutComponent } from './logout/logout.component';
 import { AuthGuard } from './_auth/guards/auth.guard';
 import { RegisterComponent } from './register/register.component';
 import { JobComponent } from './job/job.component';
+import { ResumeComponent } from './resume/resume.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent , canActivate: [AuthGuard] },
   { path: 'job-list', component: JobComponent , canActivate: [AuthGuard] },
+  { path: 'resume-list', component: ResumeComponent , canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
