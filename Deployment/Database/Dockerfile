@@ -1,13 +1,8 @@
-version: '3.8'
-services:
-  db:
-    image: postgres:14.1-alpine
-    container_name: 'postgres-db'
-    restart: always
-    environment:
-      POSTGRES_USER: pgadmin
-      POSTGRES_PASSWORD: LjDtTR4Z2MwM3dQG
-    volumes: 
-      - /home/ubuntu/postgres-db:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+FROM postgres:14.1-alpine
+
+ENV POSTGRES_USER=pgadmin
+ENV POSTGRES_PASSWORD=LjDtTR4Z2MwM3dQG
+
+VOLUME /home/ubuntu/postgres-db:/var/lib/postgresql/data
+
+EXPOSE 5432
