@@ -1,8 +1,8 @@
 name: JobMate CI Pipeline
 
 env:
-  DOCKER_HUB_USERNAME: gireesagar
-  DOCKER_HUB_TOKEN: dckr_pat_WYFu0OPqSp943hlQ4c9so8LQwGE
+  username: ${{ secrets.DOCKER_HUB_USERNAME }}
+  password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
 on:
   push:
