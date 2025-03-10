@@ -1,5 +1,9 @@
 name: JobMate CI Pipeline
 
+env:
+  username: ${{ secrets.DOCKER_HUB_USERNAME }}
+  password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
 on:
   push:
     branches: [ master, dev ]
@@ -30,39 +34,39 @@ jobs:
           # Run pytest with console coverage report
           python -m pytest tests/ 
   
-#   build-and-push:
-#     needs: test
-#     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v3
+  build-and-push:
+    needs: test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
         
-#       - name: Set up Docker Buildx
-#         uses: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
         
-#       - name: Login to Docker Hub
-#         uses: docker/login-action@v2
-#         with:
-#           username: ${{ secrets.DOCKER_HUB_USERNAME }}
-#           password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: $DOCKER_HUB_USERNAME
+          password: $DOCKER_HUB_TOKEN
           
-#       - name: Extract metadata
-#         id: meta
-#         uses: docker/metadata-action@v4
-#         with:
-#           images: yourusername/jobmate-backend
-#           tags: |
-#             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
-#             type=raw,value=develop,enable=${{ github.ref == 'refs/heads/develop' }}
-#             type=sha,format=short
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: yourusername/jobmate-backend
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=develop,enable=${{ github.ref == 'refs/heads/develop' }}
+            type=sha,format=short
             
-#       - name: Build and push Docker image
-#         uses: docker/build-push-action@v4
-#         with:
-#           context: ./Backend
-#           push: true
-#           tags: ${{ steps.meta.outputs.tags }}
-#           labels: ${{ steps.meta.outputs.labels }}
-#           cache-from: type=registry,ref=yourusername/jobmate-backend:buildcache
-#           cache-to: type=registry,ref=yourusername/jobmate-backend:buildcache,mode=max
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./Backend
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=yourusername/jobmate-backend:buildcache
+          cache-to: type=registry,ref=yourusername/jobmate-backend:buildcache,mode=max
