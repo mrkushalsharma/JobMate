@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_auth/services/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-job',
@@ -22,11 +21,11 @@ export class JobComponent implements OnInit {
   showResumeModal: boolean = false; // Modal visibility
   selectedJobId: any; // Selected job ID for association
   selectedResumeId: any; // Selected resume ID for association
+  selectedJobTitle: any = "";
   resumes: any[] = []; // Array to hold resumes
   matchValue: any = {};
   
   constructor(private authService: AuthService,
-    private spinner: NgxSpinnerService,
     private http: HttpClient
   ) {
   }
@@ -139,6 +138,7 @@ export class JobComponent implements OnInit {
     // New method to open the resume modal
     openResumeModal(job: any) {
       this.selectedJobId = job.id; // Set the selected job ID
+      this.selectedJobTitle = job.title; // Set the selected job ID
       this.showResumeModal = true; // Show the resume modal
       this.matchValue = {};
     }
@@ -147,6 +147,7 @@ export class JobComponent implements OnInit {
     closeResumeModal() {
       this.showResumeModal = false; // Hide the resume modal
       this.selectedResumeId = null; // Reset selected resume ID
+      this.selectedJobTitle = "";
     }
   
     // New method to match a resume with a job
