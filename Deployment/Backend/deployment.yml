@@ -13,6 +13,10 @@ spec:
     metadata:
       labels:
         app: backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "8000"
     spec:
       containers:
       - name: jobmate-backend
@@ -23,3 +27,24 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          value: "pgurl"
+        - name: SECRET_KEY
+          value: "key"
+        - name: ACCESS_TOKEN_EXPIRE_MINUTES
+          value: "30"
+        - name: UPLOADS_DIR
+          value: "uploads"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
