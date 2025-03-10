@@ -4,15 +4,12 @@
 This project consists of a frontend built with Angular and a backend built with FastAPI. The application is designed to track resume match making with job description using ATS.
 
 ## Features
-### Frontend (Angular)
-- [Feature 1]
-- [Feature 2]
-- [Feature 3]
 
-### Backend (FastAPI)
-- [Feature 1]
-- [Feature 2]
-- [Feature 3]
+- User authentication with JWT
+- Upload and manage resumes (PDF, DOCX, TXT)
+- Track job applications and their status
+- Match resumes with job descriptions using NLP
+- Calculate and store match scores
 
 ## Project Structure
 ```
@@ -52,7 +49,7 @@ pip install -r requirements.txt
 ### Start the Backend (FastAPI)
 ```bash
 cd backend
-uvicorn main:app --reload
+uvicorn main:app --reload or python main.py
 ```
 The backend will run at `http://127.0.0.1:8000/`.
 
@@ -109,17 +106,7 @@ flake8 .
 ```
 
 ## Deployment
-### Deploying the Frontend
-```bash
-cd frontend
-ng deploy
-```
-
-### Deploying the Backend
-```bash
-cd backend
-uvicorn main:app --host 0.0.0.0 --port 8000
-```
+Deployment is done using Dockerfile and Kubernet
 
 ## Folder Structure
 ```
@@ -133,7 +120,3 @@ uvicorn main:app --host 0.0.0.0 --port 8000
   |-- main.ts                 # Main entry point for Angular
   |-- index.html              # Main HTML file
 ```
-
-## License
-[Specify the license for your project]
-
