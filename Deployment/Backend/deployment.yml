@@ -17,6 +17,15 @@ spec:
       containers:
       - name: jobmate-backend
         image: gireesagar/jobmate-backend:v1
+        env:
+        - name: DATABASE_URL
+          value: "pgurl"
+        - name: SECRET_KEY
+          value: "key"
+        - name: ACCESS_TOKEN_EXPIRE_MINUTES
+          value: "30"
+        - name: UPLOADS_DIR
+          value: "uploads"
         resources:
           limits:
             memory: "128Mi"

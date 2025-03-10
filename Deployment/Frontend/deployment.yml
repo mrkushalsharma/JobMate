@@ -17,6 +17,9 @@ spec:
       containers:
       - name: jobmate-frontend
         image: gireesagar/jobmate-frontend:v2
+        env:
+        - name: BACKEND_API_URL
+          value: "http://jobmate-backend-service:8000"
         resources:
           limits:
             memory: "128Mi"
